@@ -1,2 +1,3 @@
-# - ics-urls:
+# look-ahead: 0.12:00:00
+# ics-urls:
   # - https://example.com/calendar.ics

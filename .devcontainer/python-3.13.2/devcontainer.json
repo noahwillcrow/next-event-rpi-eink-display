@@ -9,7 +9,8 @@
 			"extensions": [
 				"cardinal90.multi-cursor-case-preserve",
 				"ms-python.python",
-				"ms-python.black-formatter"
+				"ms-python.black-formatter",
+				"tamasfe.even-better-toml"
 			]
 		}
 	},
