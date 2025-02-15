@@ -1,0 +1,17 @@
+{
+	"name": "python-3.13.2",
+	"build": {
+		"context": ".",
+		"dockerfile": "./.Dockerfile"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"cardinal90.multi-cursor-case-preserve",
+				"ms-python.python",
+				"ms-python.black-formatter"
+			]
+		}
+	},
+	"remoteUser": "root"
+}
