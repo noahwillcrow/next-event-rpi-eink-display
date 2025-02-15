@@ -1,6 +1,5 @@
 import pytz
 import requests
-import yaml
 from datetime import date, datetime, timedelta
 from icalendar import Calendar
 
@@ -11,27 +10,24 @@ class Event:
     def __init__(self, name, start_time_utc):
         self.name = name
         self.start_time_utc = start_time_utc
+        self.time_until_event = start_time_utc - datetime.now().astimezone(pytz.utc)
 
     def __str__(self):
         return f"{self.name} at {self.start_time_utc}"
 
 
 class DataFetcher:
-    """This module is responsible for reading the config yaml file, parsing the list of ICS URLs, and fetching the data from the URLs."""
+    """This module is responsible for reading the config dict, parsing the list of ICS URLs, and fetching the data from the URLs."""
 
-    def __init__(self, config_path: str):
-        self._config_path = config_path
+    def __init__(self, config: dict):
+        self._config = config
 
     def fetch_upcoming_events(self) -> list[Event]:
-        """This function reads the config yaml file to get the list of ICS URLs, fetches the data from the URLs, and returns a list of events that are happening in the next given period of time."""
-        with open(self._config_path, 'r') as file:
-            config = yaml.safe_load(file)
-
         events = []
         now = datetime.now().astimezone(pytz.utc)
         until = now + self._get_lookahead_period()
 
-        for url in config['ics-urls']:
+        for url in self._config['events']['ics-urls']:
             response = requests.get(url)
             calendar = Calendar.from_ical(response.content)
             events.extend(self._find_events_in_calendar(calendar, now, until))
@@ -39,9 +35,8 @@ class DataFetcher:
         return events
 
     def _get_lookahead_period(self) -> timedelta:
-        """This function reads the config yamle file to get the `look-ahead`, which is a string in the format of {days}.{hours}:{minutes}:{seconds}.{milliseconds}, and returns a timedelta object."""
-        config = self._load_config_yaml()
-        lookahead = config['look-ahead']
+        """This function reads the config dict to get the `look-ahead`, which is a string in the format of {days}.{hours}:{minutes}:{seconds}.{milliseconds}, and returns a timedelta object."""
+        lookahead = self._config['events']['look-ahead']
         days, times = lookahead.split('.')
         time = times.split(':')
         hours = int(time[0])
@@ -71,12 +66,6 @@ class DataFetcher:
                     )
                     events.append(event)
         return events
-
-    def _load_config_yaml(self) -> dict:
-        """This function reads the config yaml file and returns the content as a dictionary."""
-        with open(self._config_path, 'r') as file:
-            config = yaml.safe_load(file)
-        return config
 
     def _to_utc_datetime(self, dt) -> datetime:
         # Ensure start is a datetime object

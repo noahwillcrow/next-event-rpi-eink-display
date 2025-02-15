@@ -1,3 +1,13 @@
-# look-ahead: 0.12:00:00
-# ics-urls:
-  # - https://example.com/calendar.ics
+# renderer: to-file | waveshare-2.13in-v2
+# image:
+#   width: 160
+#   height: 90
+#   padding: 2
+#   font:
+#     path: path/to/font.ttf
+#     big-text-size: 20
+#     small-text-size: 10
+# events:
+#   look-ahead: 0.12:00:00
+#   ics-urls:
+#     - https://example.com/calendar.ics
