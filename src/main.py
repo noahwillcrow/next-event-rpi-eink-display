@@ -25,6 +25,7 @@ def main():
         path_to_font=path_to_font,
         big_text_size=int(config['image']['font']['big-text-size']),
         small_text_size=int(config['image']['font']['small-text-size']),
+        should_flip=config['image']['should-flip'],
     )
     image = None
     if next_event is None:

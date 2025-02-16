@@ -15,6 +15,7 @@ class Artist:
         path_to_font: str,
         big_text_size: int,
         small_text_size: int,
+        should_flip: bool,
     ):
         self._height = height
         self._width = width
@@ -22,6 +23,7 @@ class Artist:
         self._path_to_font = path_to_font
         self._big_text_size = big_text_size
         self._small_text_size = small_text_size
+        self._should_flip = should_flip
 
     def draw_text(self, text: str) -> Image:
         """This function just draws a simple 'nothing coming up' message."""
@@ -47,6 +49,9 @@ class Artist:
                 font=font,
                 fill=0,
             )
+
+            if self._should_flip == True:
+                image = image.transpose(Image.ROTATE_180)
 
             # return the image
             return image

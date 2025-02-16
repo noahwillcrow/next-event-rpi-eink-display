@@ -7,6 +7,7 @@
 #     path: path/to/font.ttf
 #     big-text-size: 20
 #     small-text-size: 10
+#   should-flip: false
 #   no-events-message: "Nothing to show"
 # events:
 #   look-ahead: 0.12:00:00
