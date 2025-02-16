@@ -23,7 +23,41 @@ class Artist:
         self._big_text_size = big_text_size
         self._small_text_size = small_text_size
 
-    def draw(self, name: str, time_until_event: timedelta) -> Image:
+    def draw_nothing_coming_up(self) -> Image:
+        """This function just draws a simple 'nothing coming up' message."""
+        try:
+            # create blank image
+            image = Image.new('1', (self._width, self._height), 255)
+            draw = ImageDraw.Draw(image)
+
+            # define fonts
+            font = ImageFont.truetype(self._path_to_font, self._big_text_size)
+
+            # calculate text size
+            text = "Nothing coming up"
+            text_bbox = draw.textbbox((0, 0), text, font=font)
+            text_size = (text_bbox[2] - text_bbox[0], text_bbox[3] - text_bbox[1])
+
+            # calculate starting y-coordinate to center the text vertically
+            start_y = (self._height - text_size[1]) // 2
+
+            # draw text
+            draw.text(
+                (self._padding, start_y),
+                text,
+                font=font,
+                fill=0,
+            )
+
+            # return the image
+            return image
+        except Exception as e:
+            print("Error updating e-ink:", e)
+            traceback.print_exc()
+
+    def draw_upcoming_event_notice(
+        self, name: str, time_until_event: timedelta
+    ) -> Image:
         """This function takes a name and a time-until-event pair and renders an e-ink compatible image."""
         try:
             # create blank image

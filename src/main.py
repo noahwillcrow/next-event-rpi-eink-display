@@ -10,7 +10,7 @@ def main():
 
     # fetch the upcoming events
     data_fetcher = DataFetcher(config)
-    events = data_fetcher.fetch_upcoming_events()
+    next_event = data_fetcher.fetch_upcoming_events()
 
     # draw the image
     path_to_font = os.path.join(
@@ -24,7 +24,12 @@ def main():
         big_text_size=int(config['image']['font']['big-text-size']),
         small_text_size=int(config['image']['font']['small-text-size']),
     )
-    image = artist.draw(events[0].name, events[0].time_until_event)
+    if next_event is None:
+        image = artist.draw_nothing_coming_up()
+    else:
+        image = artist.draw_upcoming_event_notice(
+            next_event.name, next_event.time_until_event
+        )
 
     # render the image
     renderer = Renderer(config['renderer'])
