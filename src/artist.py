@@ -51,7 +51,7 @@ class Artist:
             # return the image
             return image
         except Exception as e:
-            print("Error updating e-ink:", e)
+            print("Error generating image:", e)
             traceback.print_exc()
 
     def draw_upcoming_event_notice(
@@ -106,5 +106,5 @@ class Artist:
             # return the image
             return image
         except Exception as e:
-            print("Error updating e-ink:", e)
+            print("Error generating image:", e)
             traceback.print_exc()
