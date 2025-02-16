@@ -1,6 +1,10 @@
 # Custom files
 config.yaml
 *.ttf
+*.png
+*.jpg
+*.jpeg
+*.bmp
 *gitignored*
 
 # Byte-compiled / optimized / DLL files
