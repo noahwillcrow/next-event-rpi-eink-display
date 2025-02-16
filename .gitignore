@@ -1,6 +1,7 @@
 # Custom files
 config.yaml
 *.ttf
+*gitignored*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
