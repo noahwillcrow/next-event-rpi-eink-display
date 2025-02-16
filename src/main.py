@@ -10,7 +10,7 @@ def main():
 
     # fetch the upcoming events
     data_fetcher = DataFetcher(config)
-    next_event = data_fetcher.fetch_upcoming_events()
+    next_event = data_fetcher.fetch_next_event()
 
     # draw the image
     path_to_font = os.path.join(
