@@ -19,6 +19,12 @@ def main():
     path_to_font = os.path.join(
         os.path.dirname(__file__), '..', config['image']['font']['path']
     )
+    should_flip_val = config['image']['should-flip']
+    if not isinstance(should_flip_val, bool):
+        if isinstance(should_flip_val, str):
+            should_flip_val = str.lower(should_flip_val) == 'true'
+        else:
+            should_flip_val = False
     artist = Artist(
         height=int(config['image']['height']),
         width=int(config['image']['width']),
@@ -26,7 +32,7 @@ def main():
         path_to_font=path_to_font,
         big_text_size=int(config['image']['font']['big-text-size']),
         small_text_size=int(config['image']['font']['small-text-size']),
-        should_flip=config['image']['should-flip'],
+        should_flip=should_flip_val,
     )
     image = None
     if next_event is None:
