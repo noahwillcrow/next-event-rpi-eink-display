@@ -22,17 +22,26 @@ class DataFetcher:
     def __init__(self, config: dict):
         self._config = config
 
-    def fetch_upcoming_events(self) -> list[Event]:
-        events = []
+    def fetch_next_event(self) -> Event | None:
+        """This function reads the config dict to get the list of ICS URLs, fetches the data from the URLs, and returns the next event coming up within the look-ahead."""
         now = datetime.now().astimezone(pytz.utc)
         until = now + self._get_lookahead_period()
+
+        next_event: Event | None = None
 
         for url in self._config['events']['ics-urls']:
             response = requests.get(url)
             calendar = Calendar.from_ical(response.content)
-            events.extend(self._find_events_in_calendar(calendar, now, until))
+            events = self._find_events_in_calendar(calendar, now, until)
 
-        return events
+            for event in events:
+                if (
+                    next_event is None
+                    or event.time_until_event < next_event.time_until_event
+                ):
+                    next_event = event
+
+        return next_event
 
     def _get_lookahead_period(self) -> timedelta:
         """This function reads the config dict to get the `look-ahead`, which is a string in the format of {days}.{hours}:{minutes}:{seconds}.{milliseconds}, and returns a timedelta object."""
