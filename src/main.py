@@ -11,6 +11,7 @@ def main():
     config = load_config_yaml('../config.yaml')
 
     # fetch the upcoming events
+    print("Fetching next event...")
     data_fetcher = DataFetcher(config)
     next_event = data_fetcher.fetch_next_event()
 
@@ -29,19 +30,24 @@ def main():
     )
     image = None
     if next_event is None:
+        print("No events found.")
         if did_last_update_have_event():
+            print("Will display 'no events' message.")
             image = artist.draw_text(config['image']['no-events-message'])
     else:
+        print("Event found:", next_event)
         image = artist.draw_upcoming_event_notice(
             next_event.name, next_event.time_until_event
         )
 
     # render the image
     if image is not None:
+        print("Rendering image")
         renderer = Renderer(config['renderer'])
         renderer.render(image)
 
     # save whether the last update had an event
+    print("Writing last update data")
     set_did_last_update_have_event(next_event is not None)
 
 
