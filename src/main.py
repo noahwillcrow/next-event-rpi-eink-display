@@ -50,7 +50,7 @@ def did_last_update_have_event() -> bool:
         return True  # if the file doesn't exist, we assume that the last update had an event
 
     with open(last_update_file_path, 'r') as file:
-        return file.read() == 'true'
+        return str.lower(file.read()) == 'true'
 
 
 def load_config_yaml(config_path) -> dict:
