@@ -25,7 +25,7 @@ def main():
         small_text_size=int(config['image']['font']['small-text-size']),
     )
     if next_event is None:
-        image = artist.draw_nothing_coming_up()
+        image = artist.draw_text(config['image']['no-events-message'])
     else:
         image = artist.draw_upcoming_event_notice(
             next_event.name, next_event.time_until_event

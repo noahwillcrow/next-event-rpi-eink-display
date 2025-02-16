@@ -23,7 +23,7 @@ class Artist:
         self._big_text_size = big_text_size
         self._small_text_size = small_text_size
 
-    def draw_nothing_coming_up(self) -> Image:
+    def draw_text(self, text: str) -> Image:
         """This function just draws a simple 'nothing coming up' message."""
         try:
             # create blank image
@@ -34,7 +34,6 @@ class Artist:
             font = ImageFont.truetype(self._path_to_font, self._big_text_size)
 
             # calculate text size
-            text = "Nothing coming up"
             text_bbox = draw.textbbox((0, 0), text, font=font)
             text_size = (text_bbox[2] - text_bbox[0], text_bbox[3] - text_bbox[1])
 
