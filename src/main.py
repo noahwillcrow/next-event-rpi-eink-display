@@ -26,6 +26,7 @@ def main():
         big_text_size=int(config['image']['font']['big-text-size']),
         small_text_size=int(config['image']['font']['small-text-size']),
     )
+    image = None
     if next_event is None:
         if did_last_update_have_event():
             image = artist.draw_text(config['image']['no-events-message'])
@@ -35,8 +36,9 @@ def main():
         )
 
     # render the image
-    renderer = Renderer(config['renderer'])
-    renderer.render(image)
+    if image is not None:
+        renderer = Renderer(config['renderer'])
+        renderer.render(image)
 
     # save whether the last update had an event
     set_did_last_update_have_event(next_event is not None)
