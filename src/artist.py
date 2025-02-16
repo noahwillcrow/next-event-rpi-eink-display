@@ -108,6 +108,9 @@ class Artist:
                 fill=0,
             )
 
+            if self._should_flip == True:
+                image = image.transpose(Image.ROTATE_180)
+
             # return the image
             return image
         except Exception as e:
