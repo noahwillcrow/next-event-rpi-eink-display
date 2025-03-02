@@ -2,27 +2,32 @@ from flask import Flask, redirect, url_for, session, render_template, request, s
 from google_auth_oauthlib.flow import Flow
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
+import json
 import os
-
 import yaml
 
 # Flask App Setup
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"  # Change this to a secure random string
 
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # 👈 Allow HTTP for local testing
+
 # OAuth Configuration
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
-CLIENT_SECRETS_FILE = "client_secret.json"
+
+PORT = 5001
 
 # Define your redirect URI (Update with your actual domain)
 REDIRECT_URI = (
-    "http://myapp.test:5000/oauth2callback"  # Update if using ngrok or SSH tunneling
+    "http://localhost:"
+    + str(PORT)
+    + "/oauth2callback"  # Update if using ngrok or SSH tunneling
 )
 
 # OAuth Flow
-# flow = Flow.from_client_secrets_file(
-#     CLIENT_SECRETS_FILE, scopes=SCOPES, redirect_uri=REDIRECT_URI
-# )
+flow = Flow.from_client_secrets_file(
+    "../../oauth-secrets.json", scopes=SCOPES, redirect_uri=REDIRECT_URI
+)
 
 
 @app.route("/")
@@ -57,7 +62,7 @@ def update_calendars():
     return {"calendars": config["events"]["calendars"]}
 
 
-@app.route("/login")
+@app.route("/oauth-login")
 def login():
     """Initiate OAuth login flow."""
     auth_url, state = flow.authorization_url(prompt="consent")
@@ -68,10 +73,23 @@ def login():
 @app.route("/oauth2callback")
 def oauth2callback():
     """Handle OAuth callback and save credentials."""
+    print(request)
     flow.fetch_token(authorization_response=request.url)
 
     creds = flow.credentials
-    session["credentials"] = creds.to_json()
+    creds_json = creds.to_json()
+    with open("../../" + creds.client_id + "-credentials.json", "w") as f:
+        f.write(creds_json)
+
+    config = load_config_yaml()
+    config["events"]["calendars"].append(
+        {
+            "type": "google-oauth",
+            "name": "New OAuth Calendar",
+            "client-id": creds.client_id,
+        }
+    )
+    write_config_yaml(config)
 
     return redirect(url_for("index"))
 
@@ -100,4 +118,4 @@ def write_config_yaml(config: dict):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=True)
+    app.run(host="0.0.0.0", port=PORT, debug=True)

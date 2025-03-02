@@ -1,5 +1,7 @@
 # Custom files
 config.yaml
+oauth-secrets.json
+*-credentials.json
 *.ttf
 *.png
 *.jpg
