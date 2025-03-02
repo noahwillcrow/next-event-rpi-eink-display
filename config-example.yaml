@@ -11,5 +11,10 @@
 #   no-events-message: "Nothing to show"
 # events:
 #   look-ahead: 0.12:00:00
-#   ics-urls:
-#     - https://example.com/calendar.ics
+#   calendars:
+#     - type: ics-url
+#       name: ICS Calendar
+#       url: https://example.com/calendar.ics
+#     - type: oauth-login
+#       name: Google Calendar
+#       client-id: 1234567890-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com
