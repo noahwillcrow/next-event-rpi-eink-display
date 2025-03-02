@@ -17,4 +17,4 @@
 #       url: https://example.com/calendar.ics
 #     - type: google-oauth
 #       name: Google Calendar
-#       client-id: 1234567890-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com
+#       file-uuid: 91bfffc3-4bcb-410a-83bc-4594c2d136b8

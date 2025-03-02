@@ -75,9 +75,9 @@ class DataFetcher:
         )
         return td
 
-    def _load_credentials(self, client_id: str) -> Credentials | None:
+    def _load_credentials(self, file_uuid: str) -> Credentials | None:
         """Load OAuth credentials from a file."""
-        creds_path = f"../{client_id}-credentials.json"
+        creds_path = f"../{file_uuid}-credentials.json"
         if os.path.exists(creds_path):
             with open(creds_path, 'r') as file:
                 creds_json = file.read()
@@ -85,9 +85,9 @@ class DataFetcher:
         return None
 
     def _fetch_next_event_from_google_oauth_calendar(
-        self, client_id: str, now: datetime, until: datetime
+        self, file_uuid: str, now: datetime, until: datetime
     ) -> Event | None:
-        creds = self._load_credentials(client_id)
+        creds = self._load_credentials(file_uuid)
         if not creds:
             return None
 

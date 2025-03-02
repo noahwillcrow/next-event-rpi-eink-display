@@ -1,6 +1,7 @@
 from flask import Flask, redirect, url_for, session, render_template, request, send_file
 from google_auth_oauthlib.flow import Flow
 import os
+import uuid
 import yaml
 
 # Flask App Setup
@@ -75,7 +76,8 @@ def oauth2callback():
 
     creds = flow.credentials
     creds_json = creds.to_json()
-    with open("../../" + creds.client_id + "-credentials.json", "w") as f:
+    creds_file_uuid = uuid.uuid4()
+    with open("../../" + creds_file_uuid + "-credentials.json", "w") as f:
         f.write(creds_json)
 
     config = load_config_yaml()
