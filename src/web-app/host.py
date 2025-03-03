@@ -85,7 +85,7 @@ def oauth2callback():
         {
             "type": "google-oauth",
             "name": "New OAuth Calendar",
-            "client-id": creds.client_id,
+            "file-uuid": creds_file_uuid,
         }
     )
     write_config_yaml(config)

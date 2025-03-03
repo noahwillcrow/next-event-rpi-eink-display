@@ -40,7 +40,7 @@ class DataFetcher:
             if calendar['type'] == 'google-oauth':
                 next_event_in_calendar = (
                     self._fetch_next_event_from_google_oauth_calendar(
-                        calendar['client-id'], now, until
+                        calendar['file-uuid'], now, until
                     )
                 )
             elif calendar['type'] == 'ics-url':
